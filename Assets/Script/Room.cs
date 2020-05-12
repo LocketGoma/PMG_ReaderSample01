@@ -6,7 +6,7 @@ public class Room : MonoBehaviour
 {
     [SerializeField] private int RoomNo;   //방 번호
     [SerializeField] private int Axis_LX;
-    [SerializeField] private int Axis_LY;
+    [SerializeField] private int Axis_LY;   //2차원 기준, 3차원일때는 Y값 -> Z값으로 변경.
     [SerializeField] private int Axis_RX;
     [SerializeField] private int Axis_RY;
     public RoomManager roomManager;

@@ -23,7 +23,6 @@ public class RoomManager : MonoBehaviour
         
 
         for (int i = 0; i < roomCount; i++) {
-            Debug.Log(loadData.Room[i].RoomNo);
             Instantiate(RoomSample).transform.parent = gameObject.transform; ;
             RoomList[i] = transform.GetChild(i).gameObject;
             RoomList[i].GetComponent<Room>().Initialized(loadData.Room[i]);

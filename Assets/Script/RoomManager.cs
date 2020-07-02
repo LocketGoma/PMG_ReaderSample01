@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public class RoomManager : MonoBehaviour
@@ -18,6 +19,9 @@ public class RoomManager : MonoBehaviour
     {
         if (jsonParser!=null)
              MakeRoomFromJson();
+
+        MakeRoomFromGenerator();
+
     }
     public void MakeRoomFromJson() {
 
@@ -29,14 +33,27 @@ public class RoomManager : MonoBehaviour
 
 
         for (int i = 0; i < roomCount; i++) {
-            Instantiate(RoomSample).transform.parent = gameObject.transform; ;
+            Instantiate(RoomSample).transform.parent = gameObject.transform;
             RoomList[i] = transform.GetChild(i).gameObject;
             RoomList[i].GetComponent<Room>().Initialized(loadData.Room[i]);
         }
     }
     public void MakeRoomFromGenerator() {
-        roomGenerator.GenerateRoom();
-        HashSet<Room> roomList = roomGenerator.GetRoomList();
+        roomGenerator.GenerateRoom(15);
+        HashSet<RoomData> roomListData = roomGenerator.GetRoomList();
+        roomCount = roomListData.Count;
+        RoomList = new GameObject[roomCount];
+
+       int i = 0;
+        foreach(RoomData rm in roomListData) {
+            Instantiate(RoomSample).transform.parent = gameObject.transform;
+            RoomList[i] = transform.GetChild(i).gameObject;
+            RoomList[i].GetComponent<Room>().Initialized(rm);
+
+            Debug.Log(i);
+            i++;
+        }
+
     }
 
 }

@@ -19,7 +19,7 @@ public class Room : MonoBehaviour
     }
 
     public void Initialized(RoomData roomInput) {
-        RoomNo = roomInput.RoomNo;
+        RoomNo = roomInput.roomNumber;
         Axis_LX = roomInput.Axis_LX;
         Axis_LY = roomInput.Axis_LY;
         Axis_RX = roomInput.Axis_RX;
@@ -34,6 +34,22 @@ public class Room : MonoBehaviour
         gameObject.transform.position = new Vector3(Axis_LX, 0,Axis_LY );
         gameObject.transform.localScale = new Vector3(Axis_RX - Axis_LX, 1,Axis_RY - Axis_LY);
 
+    }
+
+    public RoomData GetRoomData() {
+        return new RoomData(RoomNo, Axis_LX, Axis_LY, Axis_RX, Axis_RY);
+    }
+    
+    //사실상 상속이죠?
+    public static bool operator > (Room rm1, Room rm2) {
+
+        //return rm1.
+
+
+        return rm1.GetRoomData() > rm2.GetRoomData();
+    }
+    public static bool operator <(Room rm1, Room rm2) {
+        return !(rm1 > rm2);
     }
 
 

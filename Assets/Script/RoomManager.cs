@@ -39,7 +39,7 @@ public class RoomManager : MonoBehaviour
         }
     }
     public void MakeRoomFromGenerator() {
-        roomGenerator.GenerateRoom(15);
+        roomGenerator.GenerateRoom();
         HashSet<RoomData> roomListData = roomGenerator.GetRoomList();
         roomCount = roomListData.Count;
         RoomList = new GameObject[roomCount];

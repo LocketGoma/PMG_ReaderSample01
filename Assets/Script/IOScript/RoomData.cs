@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEditor.PackageManager;
 
 //방&필드 정보
 [Serializable]
@@ -27,4 +28,12 @@ public class RoomData {
     public static bool operator <(RoomData rm1, RoomData rm2) {
         return !(rm1 > rm2);
     }
+    public static bool operator ==(RoomData rm1, RoomData rm2) {
+        return (rm1.Axis_LX == rm2.Axis_LX && rm1.Axis_LY == rm2.Axis_LY && rm1.Axis_RX == rm2.Axis_RX && rm1.Axis_RY == rm2.Axis_RY);
+
+    }
+    public static bool operator !=(RoomData rm1, RoomData rm2) {
+        return !(rm1 == rm2);
+    }
+
 }

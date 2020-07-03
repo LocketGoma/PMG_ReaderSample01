@@ -25,8 +25,6 @@ public class Room : MonoBehaviour
         Axis_RX = roomInput.Axis_RX;
         Axis_RY = roomInput.Axis_RY;
 
-        Debug.Log(RoomNo+","+Axis_LX + "," +Axis_LY);
-
         InitBatch();
     }
 

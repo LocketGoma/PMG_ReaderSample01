@@ -11,6 +11,8 @@ public class RoomManager : MonoBehaviour
     [SerializeField] private int roomCount;
     [SerializeField] private JsonParser jsonParser;
     [SerializeField] private RoomGenerator roomGenerator;
+
+    private HashSet<RoomData> roomListData;
     public int RoomCount { get { return roomCount; } set { roomCount = value; } }
 
 
@@ -20,7 +22,7 @@ public class RoomManager : MonoBehaviour
         if (jsonParser!=null)
              MakeRoomFromJson();
 
-        MakeRoomFromGenerator();
+       // MakeRoomFromGenerator();
 
     }
     public void MakeRoomFromJson() {
@@ -38,9 +40,15 @@ public class RoomManager : MonoBehaviour
             RoomList[i].GetComponent<Room>().Initialized(loadData.Room[i]);
         }
     }
+    public void BTNTest() {
+        Debug.Log("Test3");
+    }
+
     public void MakeRoomFromGenerator() {
+        Debug.Log("Test");
+
         roomGenerator.GenerateRoom();
-        HashSet<RoomData> roomListData = roomGenerator.GetRoomList();
+        roomListData = roomGenerator.GetRoomList();
         roomCount = roomListData.Count;
         RoomList = new GameObject[roomCount];
 
@@ -52,6 +60,14 @@ public class RoomManager : MonoBehaviour
 
             Debug.Log(i);
             i++;
+        }
+
+    }
+
+    public void RoomReset() {
+        foreach(Transform room in transform) {
+            roomListData.Clear();
+            Destroy(room.gameObject);
         }
 
     }

@@ -3,15 +3,21 @@ using System.Collections.Generic;
 using UnityEngine;
 
 //= Room Generate Manager
+//여기 코드는 사용자가 직접 접근하는것은 하나도 없도록 (전부 상위 클래스에서 관리)
 public class RoomGenerator : MonoBehaviour
 {
     // Start is called before the first frame update
     private HashSet<RoomData> RoomList = new HashSet<RoomData>();
     [Header("Room Size / Position setting")]
+    [Range(0, 100)]
+    [SerializeField] private int minRoomSize = 1;
     [Range(0,100)]
     [SerializeField] private int maxRoomSize = 10;
     [Range(20, 100)]
-    [SerializeField] private int maxPosition = 50;
+    [SerializeField] private int maxPosition_X = 50;
+    [Range(20, 100)]
+    [SerializeField] private int maxPosition_Y = 50;
+
 
     [Header("Room Make Runs Setting")]
     [Range(0, 100)]
@@ -40,6 +46,14 @@ public class RoomGenerator : MonoBehaviour
     public bool GenerateRoom(int runs) {
         return GererateRoomData(runs);
     }
+    public void SetParameters(int count, int width, int height, int size) {
+        makeRuns = count;
+        maxPosition_X = width;
+        maxPosition_Y = height;
+        minRoomSize = size;
+    }
+
+
     public static void DataPrint(RoomData data) {
         Debug.Log("LeftX : " + data.Axis_LX + " ,LeftY : " + data.Axis_LY + "\nRightX :" + data.Axis_RX + " ,RightY : " + data.Axis_RY);
     }
@@ -48,13 +62,14 @@ public class RoomGenerator : MonoBehaviour
     }
     private bool GererateRoomData(int runs) {
         int loopCount = 0;
-        while (loopCount++ < maxTry && RoomList.Count <= runs) {
+        int roomCount = 1;
+        while (loopCount++ < maxTry && RoomList.Count < runs) {
             Debug.Log(System.DateTime.Now.Ticks);
             Random.InitState((int)System.DateTime.Now.Ticks);      //랜덤 시드 초기화
-            var LeftKeys = Random.Range(0, maxPosition);
-            var RightKeys = Random.Range(0, maxPosition);
+            var LeftKeys = Random.Range(0, maxPosition_X);
+            var RightKeys = Random.Range(0, maxPosition_Y);
 
-            RoomData tempData = new RoomData( 1, LeftKeys, RightKeys, LeftKeys + Random.Range(1, maxRoomSize), RightKeys + Random.Range(1, maxRoomSize));
+            RoomData tempData = new RoomData(roomCount, LeftKeys, RightKeys, LeftKeys + Random.Range(minRoomSize, maxRoomSize), RightKeys + Random.Range(minRoomSize, maxRoomSize));
             DataPrint(loopCount,tempData);
 
             if (RoomList.Count > 0) {           //중복 체크 
@@ -67,15 +82,16 @@ public class RoomGenerator : MonoBehaviour
                         isIntersection = true;
                         break;
                     }
-
                 }
                 if (isIntersection == false) {
                     Debug.Log("maked");
                     RoomList.Add(tempData);
+                    roomCount++;
                 }
             }
             else {
                 RoomList.Add(tempData);
+                roomCount++;
             }
         }
 

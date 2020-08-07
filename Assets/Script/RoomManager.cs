@@ -1,7 +1,6 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using System.Linq;
+﻿using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class RoomManager : MonoBehaviour
 {
@@ -12,8 +11,40 @@ public class RoomManager : MonoBehaviour
     [SerializeField] private JsonParser jsonParser;
     [SerializeField] private RoomGenerator roomGenerator;
 
+    [SerializeField] private InputField makeInputCount;      //인풋필드 - 총 생성 개수
+    [SerializeField] private InputField makeInputHeigth;     //인풋필드 - 전체 구역의 높이
+    [SerializeField] private InputField makeInputWidth;      //인풋필드 - 전체 구역의 폭    
+    [SerializeField] private InputField makeInputSize;       //인풋필드 - 각 블럭당 폭
+
+    [SerializeField] private int makeCount;                  //필드 - 총 생성 개수
+    [SerializeField] private int makeHeigth;                 //필드 - 전체 구역의 높이
+    [SerializeField] private int makeWidth;                  //필드 - 전체 구역의 폭    
+    [SerializeField] private int makeSize;                   //필드 - 각 블럭당 폭
+
+
     private HashSet<RoomData> roomListData;
     public int RoomCount { get { return roomCount; } set { roomCount = value; } }
+
+    public void InputCount(Text text) {        
+        makeCount = int.Parse(text.text);
+        
+        if (makeCount > 100) {
+            makeCount = 100;
+        } else if (makeCount < 0) {
+            makeCount = 1;
+        }
+    }
+    public void InputHeigth(Text text) {
+        makeHeigth = int.Parse(text.text);
+    }
+    public void InputWidth(Text text) {
+        makeWidth = int.Parse(text.text);
+    }
+    public void InputSize(Text text) {
+        makeSize = int.Parse(text.text);
+    }
+
+
 
 
     // Start is called before the first frame update
@@ -40,13 +71,15 @@ public class RoomManager : MonoBehaviour
             RoomList[i].GetComponent<Room>().Initialized(loadData.Room[i]);
         }
     }
-    public void BTNTest() {
-        Debug.Log("Test3");
+    public void MakeRoomFromSetting() {
+
+        roomGenerator.SetParameters(makeCount, makeWidth, makeHeigth, makeSize);
+
+        MakeRoomFromGenerator();
     }
 
-    public void MakeRoomFromGenerator() {
-        Debug.Log("Test");
 
+    public void MakeRoomFromGenerator() {
         roomGenerator.GenerateRoom();
         roomListData = roomGenerator.GetRoomList();
         roomCount = roomListData.Count;
@@ -61,7 +94,6 @@ public class RoomManager : MonoBehaviour
             Debug.Log(i);
             i++;
         }
-
     }
 
     public void RoomReset() {
